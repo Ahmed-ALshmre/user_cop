@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:cobonapp_flutter/home/homescreen.dart';
+import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
+import 'package:cobonapp_flutter/contrye.dart';
+import 'package:cobonapp_flutter/splashNew/model_animt.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -12,15 +15,16 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   AnimationController animationController;
   Animation<double> animation;
   startTime() async {
-    var _duration = new Duration(seconds: 2);
+    var _duration = new Duration(seconds: 4);
     return new Timer(_duration, navigationPage);
   }
-
   void navigationPage() {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+    EcommerceApp.sharedPreferences.getString('splash') != null
+        ? Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen()))
+        : Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => Conutry()));
   }
-
   @override
   void initState() {
     super.initState();
@@ -28,7 +32,6 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
         vsync: this, duration: new Duration(seconds: 1));
     animation =
         new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
-
     animation.addListener(() => this.setState(() {}));
     animationController.forward();
 
@@ -37,14 +40,12 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
     });
     startTime();
   }
-
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     animationController.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                     'assets/powered_by.png',
                     height: 25.0,
                     fit: BoxFit.scaleDown,
-                  ))
+                  ),
+              ),
             ],
           ),
           new Column(

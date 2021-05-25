@@ -1,10 +1,7 @@
-import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cobonapp_flutter/appData/appData.dart';
-import 'package:cobonapp_flutter/copontime/hometimer.dart';
+import 'package:filter_list/filter_list.dart';
 import 'package:cobonapp_flutter/model/like.dart';
-import 'package:cobonapp_flutter/search/search.dart';
-import 'package:cobonapp_flutter/splash/cestmdaelog.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:cobonapp_flutter/tools/sized.dart';
 import 'package:cobonapp_flutter/homebody/appBar.dart';
@@ -13,46 +10,17 @@ import 'package:cobonapp_flutter/homebody/body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cobonapp_flutter/homebody/trademarkTape.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cobonapp_flutter/deower.dart';
 import 'package:cobonapp_flutter/st.dart';
-import 'package:cobonapp_flutter/filutter/homeScreenFil.dart';
-import 'package:cobonapp_flutter/model/dielogModel.dart';
-
-List<String> imageList = [
-  "assets/images/m1.png",
-  "assets/images/m2.png",
-  "assets/images/m3.png",
-];
-
+import 'package:cobonapp_flutter/main.dart';
 class HomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  List<String> list = [
-    "مرسول",
-    "على اكس ",
-    "كريم",
-    "وبر",
-    "مرسول",
-    "على اكس ",
-    "كريم",
-    "وبر",
-  ];
-  List<String> eList = [
-    "assets/images/m8.svg",
-    "assets/images/m9.svg",
-    "assets/images/m10.svg",
-    "assets/images/m11.svg",
-    "assets/images/m8.svg",
-    "assets/images/m10.svg",
-    "assets/images/m11.svg",
-    "assets/images/m9.svg",
-  ];
+class _HomeScreenState extends State<HomeScreen> {
   double paddingValue = 0;
   bool isFav = false;
   Like like = Like();
@@ -60,85 +28,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    displaySplash();
+  }
+
+  int _selectedIndex;
+  _onSelected(int index, String comp) {
+    setState(() {
+      _selectedIndex = index;
+      compin = false;
+      compie = comp;
+    });
   }
 
   int index = 0;
-  List<String> selectedCountList = [];
-  final controller = PageController(viewportFraction: 0.8);
-  ScrollController _controllerListVie = new ScrollController(
-    initialScrollOffset: 99,
-    keepScrollOffset: true,
-  );
-  displaySplash() {
-    Timer(Duration(seconds: 5), () async {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection('diel').snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError)
-                    return new Text('Error: ${snapshot.error}');
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return new Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    default:
-                      return ListView.builder(
-                          controller: _controller,
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 1,
-                          itemBuilder: (contextBuild, index) {
-                            DelogM model = DelogM.fromJson(
-                                snapshot.data.documents[index].data);
-                            print("image ${model.imageDelog}");
-                            return CustomDialogBox(
-                              imageInText: model.imageDelog,
-                              title: EcommerceApp.sharedPreferences
-                                          .getString("la") !=
-                                      null
-                                  ? "Get discounts"
-                                  : "احصل على خصومات",
-                              descriptions: EcommerceApp.sharedPreferences
-                                          .getString("la") !=
-                                      null
-                                  ? "This text can be controlled from the control panel by changing it at the expense of the need"
-                                  : "${model.enTitle}",
-                              text: EcommerceApp.sharedPreferences
-                                          .getString("la") !=
-                                      null
-                                  ? "let's go"
-                                  : "هيا بنا",
-                            );
-                          });
-                  }
-                });
-          });
-    });
-  }
-
-  Future<void> _handleRefresh() {
-    final Completer<void> completer = Completer<void>();
-    Timer(const Duration(seconds: 3), () {
-      completer.complete();
-    });
-    setState(() {});
-    return completer.future.then<void>((_) {
-      _scaffoldKey.currentState?.showSnackBar(SnackBar(
-          content: const Text('تم التحديث'),
-          action: SnackBarAction(
-              label: 'مره اخرة',
-              onPressed: () {
-                _refreshIndicatorKey.currentState.show();
-              })));
-    });
-  }
-
-  bool toTopBtn = false;
   int count = 50;
   bool ifFloat = false;
   void getCurintIndex() {
@@ -149,8 +50,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-      GlobalKey<LiquidPullToRefreshState>();
+  String compie = "";
+  bool compin = true;
+  List<String> selectedCountList = [];
+  List<String> countList = [];
+  List<dynamic> whereI = ["rgfdh,dickd"];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var _controller = ScrollController();
   CarouselController buttonCarouselController = CarouselController();
@@ -176,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               )
             : Container(),
         key: _scaffoldKey,
-        appBar: appBarHome(keySca: _scaffoldKey, context: context),
+        appBar: appBarHome(getData: getData(), keySca: _scaffoldKey, context: context, hf: true,),
         drawer: LightDrawerPage(),
         backgroundColor: Color(0xffFBFBFB),
         body: SingleChildScrollView(
@@ -186,28 +90,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //catogrey
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomeTime()));
-                },
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    elevation: 10,
-                    child: Container(
-                        width: 360,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        alignment: Alignment.center,
-                        height: 120,
-                        child: imageSlider1(
-                            Provider.of<AppData>(context, listen: false))),
-                  ),
+              Align(
+                alignment: Alignment.center,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  elevation: 10,
+                  child: Container(
+                      width: 360,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      alignment: Alignment.center,
+                      height: 120,
+                      child: imageSlider1(
+                          Provider.of<AppData>(context, listen: false))),
                 ),
               ),
               // SizedBox(
@@ -222,49 +120,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               SizedBox(
                 height: 15,
               ),
-              TrademarkTape(),
+              compine(),
               SizedBox(
                 height: 15,
               ),
               Divider(),
-              FilDelHome(),
+              filter(),
               SizedBox(
                 height: 15,
-              ),
-              Container(
-                width: 400,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection('items')
-                      .where('listCatoEn',
-                          whereIn: EcommerceApp.sharedPreferences
-                                .getStringList("selectedCountList")).orderBy('bool', descending: true)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError)
-                      return new Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return new Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      default:
-                        return ListView.builder(
-                            controller: _controller,
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (contextBuild, index) {
-                              ItemModel model = ItemModel.fromJson(
-                                  snapshot.data.documents[index].data);
-                              return CopTime1(model: model);
-                            });
-                    }
-                  },
-                ),
-              ),
-              // DiscountBanner()
+              ), //
+              chakeCoimpine(), // DiscountBanner()
             ],
           ),
         ),
@@ -328,7 +193,398 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       },
     );
   }
-// image first
+
+  Widget flu() {
+    if (Provider.of<AppData>(context, listen: false).ctogre != null) {
+      print(
+          "mamsmasmacmac${Provider.of<AppData>(context, listen: false).ctogre.first}");
+      return Container(
+        width: 400,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance
+              .collection("items")
+              .where("listCatoEn",
+                  isEqualTo: EcommerceApp.sharedPreferences
+                      .getStringList("listco")
+                      .first)
+              .where("market",
+                  isEqualTo:
+                      Provider.of<AppData>(context, listen: false).ctogre.first)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError)
+              return new Text('نعتذر يوجد مشكلة تحقاق من الانترنيت');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                return ListView.builder(
+                    controller: _controller,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (contextBuild, index) {
+                      ItemModel model = ItemModel.fromJson(
+                          snapshot.data.documents[index].data);
+                      return CopTime1(model: model);
+                    });
+            }
+          },
+        ),
+      );
+    } else {
+      return Container(
+        width: 400,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance
+              .collection("items")
+              .where("listCatoEn",
+                  isEqualTo: EcommerceApp.sharedPreferences
+                      .getStringList("listco")
+                      .first)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError)
+              return new Text('نعتذر يوجد مشكلة تحقاق من الانترنيت');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                return ListView.builder(
+                    controller: _controller,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (contextBuild, index) {
+                      ItemModel model = ItemModel.fromJson(
+                          snapshot.data.documents[index].data);
+                      return CopTime1(model: model);
+                    });
+            }
+          },
+        ),
+      );
+    }
+  }
+
+//fi
+// ignore: missing_return
+  List<String> catoAr = [];
+  List<String> catoEn = [];
+  Widget filter() {
+    return Container(
+      height: 40,
+      width: double.infinity,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('list').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Center(
+                child: CircularProgressIndicator(),
+              );
+            default:
+              return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (contextBuild, index) {
+                    print("naasmkasanlknsa$catoAr");
+                    // ignore: unrelated_type_equality_checks
+                    if (catoAr.every((element) =>
+                            element !=
+                            snapshot.data.documents[index]['artitle']) &&
+                        catoEn.every((element) =>
+                            element !=
+                            snapshot.data.documents[index]['entitle'])) {
+                      catoAr.add(snapshot.data.documents[index]['artitle']);
+                      catoEn.add(snapshot.data.documents[index]['entitle']);
+                      Provider.of<AppData>(context, listen: false)
+                          .catog(catoAr, catoEn);
+                      print("sdsdddddddddddddssd ");
+                    }
+                    // Provider.of<AppData>(context,listen: false).catog(catoAr,catoEn);
+                    //  print("sdsdddddddddddddssd ");
+                    return Container(
+                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        onTap: () async {
+                          await FilterListDialog.display(context,
+                              allTextList: EcommerceApp.sharedPreferences
+                                      .getBool("lang")
+                                  ? Provider.of<AppData>(context, listen: false)
+                                      .arCato
+                                  : Provider.of<AppData>(context, listen: false)
+                                      .cato,
+                              height: 480,
+                              borderRadius: 20,
+                              headlineText:
+                                  EcommerceApp.sharedPreferences.getBool("lang")
+                                      ? "Filter"
+                                      : "فلتره",
+                              searchFieldHintText:
+                                  EcommerceApp.sharedPreferences.getBool("lang")
+                                      ? "Search"
+                                      : "البحث هنا",
+                              selectedTextList: selectedCountList,
+                              onApplyButtonClick: (list) {
+                            if (list != null) {
+                              setState(() {
+                                selectedCountList = List.from(list);
+                                Provider.of<AppData>(context, listen: false)
+                                    .ctogreList(selectedCountList);
+                              });
+                              Navigator.pop(context);
+                            }
+                          });
+                        },
+                        child: Icon(
+                          Icons.filter_alt_outlined,
+                          size: 35,
+                        ),
+                      ),
+                    );
+                  });
+          }
+        },
+      ),
+    );
+  }
+
+  // ignore: missing_return
+  Widget chakeCoimpine() {
+    if (compin) {
+      return flu();
+    } else {
+      print("111111111111111111111111111111111");
+      return Container(
+        width: 400,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance
+              .collection("items")
+              .where("listCatoEn",
+                  isEqualTo: EcommerceApp.sharedPreferences
+                      .getStringList("listco")
+                      .first)
+              .where("market", isEqualTo: compie)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError)
+              return new Text('نعتذر يوجد مشكلة تحقاق من الانترنيت');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                return ListView.builder(
+                    controller: _controller,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (contextBuild, index) {
+                      ItemModel model = ItemModel.fromJson(
+                          snapshot.data.documents[index].data);
+                      return CopTime1(model: model);
+                    });
+            }
+          },
+        ),
+      );
+    }
+  }
+
+  Widget compine() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('diel').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return new Center(
+              child: CircularProgressIndicator(),
+            );
+          default:
+            return Container(
+              height: 90,
+              alignment: Alignment.center,
+              child: ListView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Card(
+                              elevation: 58,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40)),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                    shape: BoxShape.circle),
+                                child: Text(
+                                  EcommerceApp.sharedPreferences.getBool("lang")
+                                      ? "All"
+                                      : "الكل",
+                                  style: TextStyle(
+                                      color: Color(
+                                        0xff0A0732,
+                                      ),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: InkWell(
+                        onTap: () {
+                          _onSelected(
+                              index, snapshot.data.documents[index]["titleAr"]);
+                          print(
+                              "22222222222222222222${snapshot.data.documents[index]["titleAr"]}");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Card(
+                            elevation: _selectedIndex != null &&
+                                    _selectedIndex == index
+                                ? 50
+                                : 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: NetworkImage(snapshot
+                                      .data.documents[index]['thumbnailUrl']),
+                                ),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            );
+        }
+      },
+    );
+  }
+  String dropdownValue = "SU";
+  List<String>listco=[];
+  Widget getData() {
+    return Container(
+      width: double.infinity,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('coon').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Center(
+                child: CircularProgressIndicator(),
+              );
+            default:
+              return ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (contextBuild, index) {
+                  ItemModel model =
+                  ItemModel.fromJson(snapshot.data.documents[index].data);
+                  print("sdsdddddddddddddssd ${model.nameCon}");
+                  return ListTile(
+                    onTap: () {
+                      setState(() {
+                        dropdownValue = "${model.nameCon}";
+                        listco.add(model.nameCon);
+                      });
+                      EcommerceApp.sharedPreferences
+                          .setString("iamgeCo", model.scienceImage);
+                      EcommerceApp.sharedPreferences.setStringList("listco", listco);
+                      print(EcommerceApp.sharedPreferences.getStringList('listco'));
+                      Route route =
+                      MaterialPageRoute(builder: (context) => MyApp());
+                      Navigator.push(context, route);
+                    },
+                    title: Text("${model.nameCon}"),
+                    leading: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Container(
+                        height: 30,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                "${model.scienceImage}",
+                              ),
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                    ),
+                  );
+                },
+              );
+          }
+        },
+      ),
+    );
+  }
 }
 
 class CustomClipPath extends CustomClipper<Path> {

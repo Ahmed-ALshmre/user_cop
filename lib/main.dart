@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cobonapp_flutter/splashNew/first_screen.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,7 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'appData/appData.dart';
 import 'splash/splash.dart';
 import 'contrye.dart';
-
+import 'splashNew/model_animt.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   EcommerceApp.auth = FirebaseAuth.instance;
@@ -18,14 +19,12 @@ Future<void> main() async {
   EcommerceApp.firestore = Firestore.instance;
   runApp(MyApp());
 }
-
 // to ensure we have the themeProvider before the app starts lets make a few more changes.
-
 class MyApp extends StatefulWidget with WidgetsBindingObserver {
+
   @override
   _MyAppState createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
 class SlideCardWidget extends StatefulWidget {
   @override
   _SlideCardWidgetState createState() => _SlideCardWidgetState();
 }
-
 class _SlideCardWidgetState extends State<SlideCardWidget> {
   @override
   Widget build(BuildContext context) {
@@ -17,7 +15,6 @@ class _SlideCardWidgetState extends State<SlideCardWidget> {
           'FIRST',
           '[Color] and [ColorSwatch] constants which represent Material design',
         ),
-
       ],
     );
   }
@@ -28,9 +25,7 @@ class AnimCard extends StatefulWidget {
   final String num;
   final String numEng;
   final String content;
-
   AnimCard(this.color, this.num, this.numEng, this.content);
-
   @override
   _AnimCardState createState() => _AnimCardState();
 }
@@ -68,16 +63,13 @@ class _AnimCardState extends State<AnimCard> {
     );
   }
 }
-
 class CardItem extends StatelessWidget {
   final Color color;
   final String num;
   final String numEng;
   final String content;
   final onTap;
-
   CardItem(this.color, this.num, this.numEng, this.content, this.onTap);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -88,7 +80,6 @@ class CardItem extends StatelessWidget {
     );
   }
 }
-
 class ArcClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -98,7 +89,6 @@ class ArcClipper extends CustomClipper<Path> {
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
-
     var arcPath = Path.combine(
       PathOperation.difference,
       path,
@@ -114,7 +104,6 @@ class ArcClipper extends CustomClipper<Path> {
     );
     return arcPath;
   }
-
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

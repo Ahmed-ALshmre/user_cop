@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:cobonapp_flutter/secScreenLang/uiSplash.dart';
 import 'model/model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
-import 'appData/appData.dart';
-
+import 'lan/deldgt.dart';
+import 'tools/ecomm.dart';
 class Conutry extends StatefulWidget {
   @override
   _ConutryState createState() => _ConutryState();
 }
-
 class _ConutryState extends State<Conutry> {
   String dropdownValue = "SU";
-  String imageDropdownValue = "https://firebasestorage.googleapis.com/v0/b/copone-58cf5.appspot.com/o/su.png?alt=media&token=54f94e9f-c704-4cc9-a298-54ae2f47de38";
-
+  List<String> listco = [];
+  String imageDropdownValue =
+      "https://firebasestorage.googleapis.com/v0/b/copone-58cf5.appspot.com/o/su.png?alt=media&token=54f94e9f-c704-4cc9-a298-54ae2f47de38";
   @override
   Widget build(BuildContext context) {
-
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -26,6 +24,16 @@ class _ConutryState extends State<Conutry> {
           uiAuth(context, _height, _width, ""),
           SizedBox(
             height: 100,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            alignment: Alignment.centerRight,
+            child: Text(
+              " * الرجاء تحديد البلد",
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.center,
@@ -52,17 +60,22 @@ class _ConutryState extends State<Conutry> {
                       Row(
                         children: [
                           SizedBox(
-                            width: 50,
+                            width: 30,
                           ),
-                          Text('$dropdownValue'),
+                          Text(
+                            '$dropdownValue',
+                            style: TextStyle(fontSize: 20),
+                          ),
                           SizedBox(
-                            width: 10,
+                            width: 30,
                           ),
-                          Image.network(
-                            "$imageDropdownValue",
-                            height: 40,
-                            width: 40,
-                            fit: BoxFit.cover,
+                          Container(
+                            height: 35,
+                            width: 50,
+                            child: Image.network(
+                              "$imageDropdownValue",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ],
                       ),
@@ -110,9 +123,17 @@ class _ConutryState extends State<Conutry> {
                     onTap: () {
                       setState(() {
                         dropdownValue = "${model.nameCon}";
-                        imageDropdownValue = "${model.nameCon}";
+                        listco.add(model.nameCon);
                       });
-                      Navigator.pop(context);
+                      EcommerceApp.sharedPreferences
+                          .setString("iamgeCo", model.scienceImage);
+                      EcommerceApp.sharedPreferences
+                          .setStringList("listco", listco);
+                      print(EcommerceApp.sharedPreferences
+                          .getStringList('listco'));
+                      Route route =
+                          MaterialPageRoute(builder: (context) => LangCode());
+                      Navigator.push(context, route);
                     },
                     title: Text("${model.nameCon}"),
                     leading: Padding(
@@ -121,13 +142,12 @@ class _ConutryState extends State<Conutry> {
                         height: 30,
                         width: 50,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image:  NetworkImage(
-                              "${model.scienceImage}",
-                            ),
-                            fit: BoxFit.cover,
-                          )
-                        ),
+                            image: DecorationImage(
+                          image: NetworkImage(
+                            "${model.scienceImage}",
+                          ),
+                          fit: BoxFit.cover,
+                        )),
                       ),
                     ),
                   );

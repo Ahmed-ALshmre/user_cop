@@ -48,7 +48,7 @@ class LightDrawerPage extends StatelessWidget {
                       gradient: LinearGradient(
                           colors: [Colors.orange, Colors.deepOrange])),
                   child: CircleAvatar(
-                    child:FlutterLogo(),
+                    child: FlutterLogo(),
                   ),
                 ),
                 SizedBox(height: 5.0),
@@ -66,113 +66,72 @@ class LightDrawerPage extends StatelessWidget {
                 SizedBox(height: 30.0),
                 _buildRow(
                     icon: Icons.home,
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "Home page"
-                            : "الصفحة الرئيسية"),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "Home page"
+                        : "الصفحة الرئيسية"),
                     onp: () {
                       Navigator.pop(context);
                     }),
                 _buildDivider(),
                 _buildRow(
                     routeImage: "assets/icon/tr.svg",
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "language"
-                            : "اللغة"),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "language"
+                        : "اللغة"),
                     onp: () {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (_) => LangCode()));
                     }),
                 _buildDivider(),
                 _buildRow(
-                    routeImage: "assets/icon/tele.svg",
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "telegram"
-                            : "تلكرام"),
-                    onp: () {
-                    }),
-                _buildDivider(),
-                _buildRow(
                     routeImage: "assets/icon/what.svg",
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "whats App"
-                            : "وتساب"),
-                    onp: () {
-                    }),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "whats App"
+                        : "وتساب"),
+                    onp: () {}),
                 _buildDivider(),
                 _buildRow(
                     routeImage: "assets/icon/face.svg",
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "Facebook"
-                            : "فيس بوك"),
-                    onp: () {
-                    }),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "Facebook"
+                        : "فيس بوك"),
+                    onp: () {}),
                 _buildDivider(),
                 _buildRow(
                     routeImage: "assets/icon/twi.svg",
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "twitter"
-                            : "تويتر"),
-                    onp: () {
-                    }),
-                _buildDivider(),
-                _buildRow(
-                    icon: Icons.person_pin,
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "Join us"
-                            : "انضم إلينا"),
-                    onp: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => LoginSevenPage()));
-                    }),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "twitter"
+                        : "تويتر"),
+                    onp: () {}),
                 _buildDivider(),
                 _buildRow(
                     icon: Icons.favorite,
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "Rate the app"
-                            : "مراجعات التطبيق"),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "Rate the app"
+                        : "مراجعات التطبيق"),
                     onp: () {
-                      if(Platform.isAndroid){
-                        launchUrl("https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms");
+                      if (Platform.isAndroid) {
+                        launchUrl(
+                            "https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms");
                       }
-                      },
+                    },
                     showBadge: false),
                 _buildDivider(),
                 _buildRow(
                     icon: Icons.email,
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "call us"
-                            : "اتصل بنا"),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "call us"
+                        : "اتصل بنا"),
                     onp: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => HelpCenter()));
                     }),
                 _buildDivider(),
                 _buildRow(
-                    icon: Icons.timer_rounded,
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "Temporary discounts"
-                            : "الخصومات الموقته"),
-                    onp: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => HomeTime()));
-                    }),
-                _buildDivider(),
-                _buildRow(
                     icon: Icons.info_outline,
-                    title:
-                        (EcommerceApp.sharedPreferences.getString("la") != null
-                            ? "Help"
-                            : "المساعدة"),
+                    title: (EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "Help"
+                        : "المساعدة"),
                     onp: () {}),
                 _buildDivider(),
               ],
@@ -182,11 +141,13 @@ class LightDrawerPage extends StatelessWidget {
       ),
     );
   }
+
   Divider _buildDivider() {
     return Divider(
       color: divider,
     );
   }
+
   Widget _buildRow(
       {IconData icon,
       String routeImage,
@@ -243,6 +204,7 @@ class LightDrawerPage extends StatelessWidget {
       ),
     );
   }
+
   void launchUrl(String url) async {
     if (await canLaunch(url)) {
       launch(url);

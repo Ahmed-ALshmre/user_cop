@@ -1,7 +1,7 @@
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
-
 import '../main.dart';
+import 'package:cobonapp_flutter/splashNew/model_animt.dart';
 
 class LangCode extends StatefulWidget {
   static final String path = "lib/src/pages/login/login7.dart";
@@ -48,7 +48,9 @@ class _LangCodeState extends State<LangCode> {
                       SizedBox(
                         height: 40,
                       ),
-                      FlutterLogo(size: 65,),
+                      FlutterLogo(
+                        size: 65,
+                      ),
                       SizedBox(
                         height: 20,
                       ),
@@ -71,44 +73,60 @@ class _LangCodeState extends State<LangCode> {
             ],
           ),
           SizedBox(
-            height: 30,
+            height: 60,
           ),
-           Center(
-             child: Row(
-             mainAxisAlignment: MainAxisAlignment.center,
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FlatButton(onPressed: (){
-                  setState(() {
-                  });
-                  EcommerceApp.sharedPreferences.clear();
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>MyApp()));
-                }, child: Container(
-                    alignment: Alignment.center,
-                    height: 40,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10),
-
-                    ),
-                    child: Text("العربي"))),
-                FlatButton(onPressed: (){
-                  setState(() {
-                  });
-                  EcommerceApp.sharedPreferences.setString("la", "en");
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>MyApp()));
-                }, child: Container(
-                    alignment: Alignment.center,
-                    height: 40,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text("English")))
+                FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        EcommerceApp.sharedPreferences.setString("la", "ar");
+                        EcommerceApp.sharedPreferences
+                            .setString("splash", "true");
+                        EcommerceApp.sharedPreferences.setBool("lang", false);
+                      });
+                      // EcommerceApp.sharedPreferences.clear();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => OnboardingExample()));
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text("العربي"))),
+                FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        EcommerceApp.sharedPreferences.setString("la", "en");
+                        EcommerceApp.sharedPreferences
+                            .setString("splash", "true");
+                        EcommerceApp.sharedPreferences.setBool("lang", true);
+                      });
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => OnboardingExample()));
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text("English")))
               ],
+            ),
           ),
-           ),
         ],
       ),
     );
@@ -133,6 +151,7 @@ class WaveClipper1 extends CustomClipper<Path> {
     path.close();
     return path;
   }
+
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return false;

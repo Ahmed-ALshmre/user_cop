@@ -10,22 +10,24 @@ class AppLocale {
   static AppLocale of(BuildContext context) {
     return Localizations.of(context, AppLocale);
   }
+
   Future loadLang() async {
     String _langFile =
-    await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
+        await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
     Map<String, dynamic> _loadValues = jsonDecode(_langFile);
     _loadedLocaleValues =
         _loadValues.map((key, value) => MapEntry(key, value.toString()));
   }
+
   String getTranslated(String key) {
     return _loadedLocaleValues[key];
   }
-  static  LocalizationsDelegate<AppLocale> delegate =
-  _AppLocaleDelegates();
+
+  static LocalizationsDelegate<AppLocale> delegate = _AppLocaleDelegates();
 }
 
 class _AppLocaleDelegates extends LocalizationsDelegate<AppLocale> {
-   _AppLocaleDelegates();
+  _AppLocaleDelegates();
   @override
   bool isSupported(Locale locale) {
     return ['en', 'ar'].contains(locale.languageCode);

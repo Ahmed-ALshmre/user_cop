@@ -1,6 +1,7 @@
 class ItemModel {
   String titleAr;
   String nameCon;
+  String url;
   String titleEn;
   List <String> entitle;
   List <String> arTitle;
@@ -16,7 +17,7 @@ class ItemModel {
   int conter;
   String id;
   ItemModel(
-      {this.titleEn,this.nameCon,
+      {this.url, this.titleEn,this.nameCon,
         this.titleAr,this.conter,
         this.imageList,
         this.dateTimeEnd,
@@ -33,6 +34,7 @@ class ItemModel {
       });
   ItemModel.fromJson(Map<String, dynamic> json) {
     titleEn = json['titleEn'];
+    url = json['productUrl'];
     scienceImage = json['image'];
     dateTime = json['startS'];
     dateTimeEnd = json['endE'];
@@ -45,7 +47,7 @@ class ItemModel {
     imageList = json['urls'];
     id = json['id'];
     conter = json['conter'];
-    code = json['shortInfo'];
+    code = json['code'];
     thumbnailUrl = json['thumbnailUrl'];
     price = json['price'];
   }
@@ -53,6 +55,7 @@ class ItemModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['titleEn'] = this.titleEn;
+    data['productUrl'] = this.url;
     data['startS'] = this.dateTime;
     data['endE'] = this.dateTimeEnd;
     data['image'] = this.scienceImage;
@@ -65,7 +68,7 @@ class ItemModel {
     data['urls'] = this.imageList;
     data['id'] = this.id;
     data['conter'] = this.conter;
-    data['shortInfo'] = this.code;
+    data['code'] = this.code;
     data['price'] = this.price;
     data['thumbnailUrl'] = this.thumbnailUrl;
     return data;

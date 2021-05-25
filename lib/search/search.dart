@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'appbarsearch.dart';
-
+import 'package:cobonapp_flutter/homebody/body.dart';
 class SearchProduct extends StatefulWidget {
   static String routeName = "/search";
   @override
@@ -13,8 +13,21 @@ class SearchProduct extends StatefulWidget {
 }
 class _SearchProductState extends State<SearchProduct> {
   Future<QuerySnapshot> listQuery;
+String tit;
+  void chake(){
+    if(EcommerceApp.sharedPreferences.getString("la")=="ar"){
+      setState(() {
+        tit="titleAr";
+      });
+    }else if(EcommerceApp.sharedPreferences.getString("la")=="en") {
+      setState(() {
+        tit = "titleEn";
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    chake();
     return SafeArea(
       child: Scaffold(
         appBar: MyAppBar(
@@ -32,10 +45,13 @@ class _SearchProductState extends State<SearchProduct> {
                     itemBuilder: (context, index) {
                       ItemModel model = ItemModel.fromJson(
                           snapShout.data.documents[index].data);
-                      return Container();
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CopTime1(model: model),
+                      );
                     })
                 : Center(
-                    child: Text(EcommerceApp.sharedPreferences.getString("la")!=null?"There is no data":'لا توجد بيانات'),
+                    child: Text(EcommerceApp.sharedPreferences.getBool("lang") ?"There is no data":'لا توجد بيانات'),
                   );
           },
         ),
@@ -135,12 +151,11 @@ class _SearchProductState extends State<SearchProduct> {
       ),
     );
   }
-
   // ignore: missing_return
   Future startSearch(String query) async {
     listQuery = Firestore.instance
-        .collection('all')
-        .where('title', isGreaterThanOrEqualTo: query)
+        .collection('items')
+        .where('titleEn', isGreaterThanOrEqualTo: query).where("name_c",isEqualTo: "hcvgvg")
         .getDocuments();
   }
 }

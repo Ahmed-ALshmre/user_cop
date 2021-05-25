@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class AppData with ChangeNotifier{
 int c =0;
 List<dynamic>contrey;
+List<String>cato;
+List<String>arCato;
+List<String>ctogre;
 List<dynamic>listImageTradMark = [];
 bool like =true;
  int listContry =1;
@@ -10,11 +13,20 @@ bool like =true;
     c= index;
     notifyListeners();
   }
-cooList(List coo){
+catog(List cto ,arCto){
+  cato = cto;
+  arCato=arCto;
+  notifyListeners();
+}
+  cooList(List coo){
 contrey = coo;
   notifyListeners();
 }
 
+ctogreList(List cto){
+  ctogre = cto;
+  notifyListeners();
+}
   likeProv(bool newLike){
     like= newLike;
     notifyListeners();
