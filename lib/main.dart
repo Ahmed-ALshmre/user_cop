@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:cobonapp_flutter/splashNew/first_screen.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// ignore: unused_import
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,8 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'appData/appData.dart';
 import 'splash/splash.dart';
-import 'contrye.dart';
-import 'splashNew/model_animt.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   EcommerceApp.auth = FirebaseAuth.instance;

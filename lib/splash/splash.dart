@@ -3,7 +3,6 @@ import 'package:cobonapp_flutter/home/homescreen.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
 import 'package:cobonapp_flutter/contrye.dart';
-import 'package:cobonapp_flutter/splashNew/model_animt.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -18,6 +17,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
     var _duration = new Duration(seconds: 4);
     return new Timer(_duration, navigationPage);
   }
+
   void navigationPage() {
     EcommerceApp.sharedPreferences.getString('splash') != null
         ? Navigator.of(context).pushReplacement(
@@ -25,6 +25,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
         : Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => Conutry()));
   }
+
   @override
   void initState() {
     super.initState();
@@ -40,12 +41,13 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
     });
     startTime();
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     animationController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,16 +58,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
           new Column(
             mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(bottom: 30.0),
-                  child: new Image.asset(
-                    'assets/powered_by.png',
-                    height: 25.0,
-                    fit: BoxFit.scaleDown,
-                  ),
-              ),
-            ],
+            children: <Widget>[],
           ),
           new Column(
             mainAxisAlignment: MainAxisAlignment.center,

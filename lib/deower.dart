@@ -1,17 +1,15 @@
 import 'dart:io';
-import 'package:cobonapp_flutter/copontime/hometimer.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'auth/login.dart';
+
 import 'droer/help.dart';
 import 'lan/deldgt.dart';
 
 class LightDrawerPage extends StatelessWidget {
   static final String path = "lib/src/pages/navigation/drawer2.dart";
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final Color primary = Colors.white;
   final Color active = Colors.grey.shade800;
   final Color divider = Colors.grey.shade600;

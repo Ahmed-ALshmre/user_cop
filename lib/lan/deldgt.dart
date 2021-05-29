@@ -1,6 +1,6 @@
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
+
 import 'package:cobonapp_flutter/splashNew/model_animt.dart';
 
 class LangCode extends StatefulWidget {

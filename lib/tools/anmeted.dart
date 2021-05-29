@@ -1,5 +1,4 @@
-import 'dart:async';
-import 'package:clipboard/clipboard.dart';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -63,8 +62,10 @@ class _AnimatedWidgetWidgetState extends State<AnimatedWidgetWidget>
 }
 // ignore: must_be_immutable
 class ButtonTransition extends AnimatedWidget {
+  // ignore: unused_field
   final AnimationController _controller;
   final String name;
+  // ignore: unused_field
   final State _state;
   final bool stat;
    ButtonTransition(this.name, this._controller, this._state, this.stat, {width }) : super(listenable: width);

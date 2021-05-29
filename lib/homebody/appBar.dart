@@ -4,7 +4,6 @@ import 'package:rating_dialog/rating_dialog.dart';
 import 'package:cobonapp_flutter/faiver/screen_fav.dart';
 import 'package:cobonapp_flutter/home/homescreen.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ignore: missing_return
 Widget appBarHome(
@@ -120,11 +119,10 @@ void feedBek(context) {
           // optional
           onSubmitPressed: (int rating) {
             print("onSubmitPressed: rating = $rating");
-// TODO: open the app's page on Google Play / Apple App Store
+
           },
           onAlternativePressed: () {
             print("onAlternativePressed: do something");
-// TODO: maybe you want the user to contact you instead of rating a bad review
           },
         );
       });

@@ -9,12 +9,12 @@ import 'package:cobonapp_flutter/model/model.dart';
 import 'package:cobonapp_flutter/homebody/body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cobonapp_flutter/homebody/trademarkTape.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cobonapp_flutter/deower.dart';
 import 'package:cobonapp_flutter/st.dart';
 import 'package:cobonapp_flutter/main.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
@@ -80,7 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             : Container(),
         key: _scaffoldKey,
-        appBar: appBarHome(getData: getData(), keySca: _scaffoldKey, context: context, hf: true,),
+        appBar: appBarHome(
+          getData: getData(),
+          keySca: _scaffoldKey,
+          context: context,
+          hf: true,
+        ),
         drawer: LightDrawerPage(),
         backgroundColor: Color(0xffFBFBFB),
         body: SingleChildScrollView(
@@ -137,10 +142,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  List<String> imageItemList = [];
   //text an app first screen
   Widget imageSlider1(var picUp) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('imagefirest').snapshots(),
+      stream: Firestore.instance.collection('adaIamge').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
@@ -157,9 +163,14 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (contextBuild, index) {
                 ItemModel model =
                     ItemModel.fromJson(snapshot.data.documents[index].data);
-                print(model.imageList);
-                Provider.of<AppData>(context, listen: false)
-                    .listConter(model.imageList.length);
+                // here
+                if (imageItemList.every((element) =>
+                    element != snapshot.data.documents[index]['image'])) {
+                  imageItemList.add(snapshot.data.documents[index]['image']);
+                  print("nassssssssssssssss$imageItemList");
+                  Provider.of<AppData>(context, listen: false)
+                      .listConter(imageItemList.length);
+                }
                 return CarouselSlider(
                   options: CarouselOptions(
                     onPageChanged:
@@ -171,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     enlargeCenterPage: false,
                     autoPlay: true,
                   ),
-                  items: model.imageList
+                  items: imageItemList
                       .map(
                         (item) => Container(
                           width: 360,
@@ -424,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (index == 0) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()));
@@ -525,8 +536,9 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
   String dropdownValue = "SU";
-  List<String>listco=[];
+  List<String> listco = [];
   Widget getData() {
     return Container(
       width: double.infinity,
@@ -546,7 +558,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (contextBuild, index) {
                   ItemModel model =
-                  ItemModel.fromJson(snapshot.data.documents[index].data);
+                      ItemModel.fromJson(snapshot.data.documents[index].data);
                   print("sdsdddddddddddddssd ${model.nameCon}");
                   return ListTile(
                     onTap: () {
@@ -556,10 +568,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                       EcommerceApp.sharedPreferences
                           .setString("iamgeCo", model.scienceImage);
-                      EcommerceApp.sharedPreferences.setStringList("listco", listco);
-                      print(EcommerceApp.sharedPreferences.getStringList('listco'));
+                      EcommerceApp.sharedPreferences
+                          .setStringList("listco", listco);
+                      print(EcommerceApp.sharedPreferences
+                          .getStringList('listco'));
                       Route route =
-                      MaterialPageRoute(builder: (context) => MyApp());
+                          MaterialPageRoute(builder: (context) => MyApp());
                       Navigator.push(context, route);
                     },
                     title: Text("${model.nameCon}"),
@@ -570,11 +584,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 50,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(
-                                "${model.scienceImage}",
-                              ),
-                              fit: BoxFit.cover,
-                            )),
+                          image: NetworkImage(
+                            "${model.scienceImage}",
+                          ),
+                          fit: BoxFit.cover,
+                        )),
                       ),
                     ),
                   );

@@ -11,6 +11,7 @@ class DelogM{
     code = json['code'];
     imageDelog = json['thumbnailUrl'];
   }
+  // ignore: missing_return
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['artitle'] = this.arTitle;

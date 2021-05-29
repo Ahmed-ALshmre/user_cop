@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image/image.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpCenter extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HelpCenterState extends State<HelpCenter> {
   TextEditingController _controller = TextEditingController();
   @override
   void dispose() {
-    // TODO: implement dispose
+   
     super.dispose();
     _controller.dispose();
   }

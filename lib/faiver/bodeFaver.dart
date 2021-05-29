@@ -1,12 +1,9 @@
-import 'dart:async';
-import 'dart:math';
+
 import 'package:cobonapp_flutter/home/homescreen.dart';
 import 'package:cobonapp_flutter/model/model.dart';
-import 'package:cobonapp_flutter/tools/pinter.dart';
 import 'package:cobonapp_flutter/tools/sized.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
 import 'package:clipboard/clipboard.dart';

@@ -7,7 +7,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+ 
 
   String title = "Title";
   String helper = "helper";
@@ -16,7 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (message) async{
@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(helper),
             Text(
               '$title',
+              // ignore: deprecated_member_use
               style: Theme.of(context).textTheme.display1,
             ),
           ],
