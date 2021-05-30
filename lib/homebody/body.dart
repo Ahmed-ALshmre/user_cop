@@ -1,8 +1,5 @@
-import 'dart:async';
-import 'dart:math';
 import 'package:cobonapp_flutter/home/homescreen.dart';
 import 'package:cobonapp_flutter/model/model.dart';
-import 'package:cobonapp_flutter/tools/pinter.dart';
 import 'package:cobonapp_flutter/tools/sized.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -64,14 +61,12 @@ class _CopTime1State extends State<CopTime1> {
                     child: Container(
                       width: 80,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: Color(0xffF7F3FF),
-                      ),
+                          borderRadius: BorderRadius.circular(40),
+                          color: Color(0xffF7F3FF),
+                          image: DecorationImage(
+                              image: NetworkImage(widget.model.thumbnailUrl))),
                       alignment: Alignment.center,
                       height: 80,
-                      child: Image.network(
-                        widget.model.thumbnailUrl,
-                      ),
                     ),
                   ),
                   Card(

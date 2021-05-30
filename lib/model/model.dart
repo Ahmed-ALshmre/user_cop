@@ -1,6 +1,7 @@
 class ItemModel {
   String titleAr;
   String nameCon;
+  String nameConEn;
   String url;
   String titleEn;
   List <String> entitle;
@@ -22,6 +23,7 @@ class ItemModel {
         this.imageList,
         this.dateTimeEnd,
         this.dateTime,
+        this.nameConEn,
         this.scienceImage,
         this.entitle,
         this.arTitle,
@@ -35,6 +37,7 @@ class ItemModel {
   ItemModel.fromJson(Map<String, dynamic> json) {
     titleEn = json['titleEn'];
     url = json['productUrl'];
+     nameConEn = json['name_e'];
     scienceImage = json['image'];
     dateTime = json['startS'];
     dateTimeEnd = json['endE'];
@@ -56,6 +59,7 @@ class ItemModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['titleEn'] = this.titleEn;
     data['productUrl'] = this.url;
+    data['name_e'] = this.nameConEn;
     data['startS'] = this.dateTime;
     data['endE'] = this.dateTimeEnd;
     data['image'] = this.scienceImage;

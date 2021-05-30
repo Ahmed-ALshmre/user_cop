@@ -6,25 +6,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'appbarsearch.dart';
 import 'package:cobonapp_flutter/homebody/body.dart';
+
 class SearchProduct extends StatefulWidget {
   static String routeName = "/search";
   @override
   _SearchProductState createState() => new _SearchProductState();
 }
+
 class _SearchProductState extends State<SearchProduct> {
   Future<QuerySnapshot> listQuery;
-String tit;
-  void chake(){
-    if(EcommerceApp.sharedPreferences.getString("la")=="ar"){
+  String tit;
+  void chake() {
+    if (EcommerceApp.sharedPreferences.getString("la") == "ar") {
       setState(() {
-        tit="titleAr";
+        tit = "titleAr";
       });
-    }else if(EcommerceApp.sharedPreferences.getString("la")=="en") {
+    } else if (EcommerceApp.sharedPreferences.getString("la") == "en") {
       setState(() {
         tit = "titleEn";
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     chake();
@@ -51,18 +54,21 @@ String tit;
                       );
                     })
                 : Center(
-                    child: Text(EcommerceApp.sharedPreferences.getBool("lang") ?"There is no data":'لا توجد بيانات'),
+                    child: Text(EcommerceApp.sharedPreferences.getBool("lang")
+                        ? "There is no data"
+                        : 'لا توجد بيانات'),
                   );
           },
         ),
       ),
     );
   }
+
   Widget serachWid(BuildContext context) {
     return Row(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width*0.99,
+          width: MediaQuery.of(context).size.width * 0.99,
           decoration: BoxDecoration(
             color: Colors.grey.withOpacity(0.5),
             borderRadius: BorderRadius.circular(5),
@@ -81,21 +87,24 @@ String tit;
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
-                      hintText:EcommerceApp.sharedPreferences.getString("la")!=null?"Find the coupon":"البحث عن الكوبون",
+                      hintText:
+                          EcommerceApp.sharedPreferences.getString("la") != null
+                              ? "Find the coupon"
+                              : "البحث عن الكوبون",
                       prefixIcon: Icon(Icons.search)),
                 ),
               ),
               SizedBox(
-                child: CountryCodePicker(
-                  onChanged: print,
-                  hideMainText: true,
-                  showFlagMain: true,
-                  showFlag: false,
-                  initialSelection: 'sa',
-                  hideSearch: true,
-                  showCountryOnly: true,
-                  showOnlyCountryWhenClosed: true,
-                  alignLeft: true,
+                child: Container(
+                  height: 30,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    image: DecorationImage(image:NetworkImage(
+                    "${EcommerceApp.sharedPreferences.getString("iamgeCo")}",
+                  ),)
+                  ),
                 ),
               ),
             ],
@@ -104,6 +113,7 @@ String tit;
       ],
     );
   }
+
   Widget sizedWidth() {
     return Container(
       alignment: Alignment.center,
@@ -151,11 +161,17 @@ String tit;
       ),
     );
   }
+
   // ignore: missing_return
   Future startSearch(String query) async {
     listQuery = Firestore.instance
         .collection('items')
-        .where('titleEn', isGreaterThanOrEqualTo: query).where("name_c",isEqualTo: "hcvgvg")
-        .getDocuments();
+        .where('market', isGreaterThanOrEqualTo: query)
+        .where("listCatoEn",
+            isEqualTo:
+                EcommerceApp.sharedPreferences.getStringList("listco").first)
+        .getDocuments().catchError((e){
+          print(e.toString());
+        });
   }
 }

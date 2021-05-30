@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'droer/lango.dart';
 import 'droer/help.dart';
-import 'lan/deldgt.dart';
 
 class LightDrawerPage extends StatelessWidget {
   static final String path = "lib/src/pages/navigation/drawer2.dart";
@@ -78,7 +77,7 @@ class LightDrawerPage extends StatelessWidget {
                         : "اللغة"),
                     onp: () {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => LangCode()));
+                          MaterialPageRoute(builder: (_) => LangDriore()));
                     }),
                 _buildDivider(),
                 _buildRow(

@@ -14,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cobonapp_flutter/deower.dart';
 import 'package:cobonapp_flutter/st.dart';
 import 'package:cobonapp_flutter/main.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -28,6 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    startTime();
+  }
+
+  startTime() async {
+    var _duration = new Duration(seconds: 4);
+    return new Timer(_duration, navigationPage);
+  }
+
+  void navigationPage() {
+    feedBek(context);
   }
 
   int _selectedIndex;
@@ -563,8 +574,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListTile(
                     onTap: () {
                       setState(() {
-                        dropdownValue = "${model.nameCon}";
-                        listco.add(model.nameCon);
+                        dropdownValue =
+                            "${EcommerceApp.sharedPreferences.getBool("lang") ? model.nameConEn : model.nameCon}";
+                        listco.add(
+                            "${EcommerceApp.sharedPreferences.getBool("lang") ? model.nameConEn : model.nameCon}");
                       });
                       EcommerceApp.sharedPreferences
                           .setString("iamgeCo", model.scienceImage);
@@ -576,7 +589,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(builder: (context) => MyApp());
                       Navigator.push(context, route);
                     },
-                    title: Text("${model.nameCon}"),
+                    title: Text(
+                        "${EcommerceApp.sharedPreferences.getBool("lang") ? model.nameConEn : model.nameCon}"),
                     leading: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(

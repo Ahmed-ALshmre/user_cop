@@ -1,14 +1,14 @@
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
-import 'package:cobonapp_flutter/contrye.dart';
+import 'package:cobonapp_flutter/main.dart';
 
-class LangCode extends StatefulWidget {
+class LangDriore extends StatefulWidget {
   static final String path = "lib/src/pages/login/login7.dart";
   @override
-  _LangCodeState createState() => _LangCodeState();
+  _LangDrioreState createState() => _LangDrioreState();
 }
 
-class _LangCodeState extends State<LangCode> {
+class _LangDrioreState extends State<LangDriore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,9 +88,7 @@ class _LangCodeState extends State<LangCode> {
                       });
                       // EcommerceApp.sharedPreferences.clear();
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => Conutry()));
+                          context, MaterialPageRoute(builder: (_) => MyApp()));
                     },
                     child: Container(
                         alignment: Alignment.center,
@@ -110,9 +108,7 @@ class _LangCodeState extends State<LangCode> {
                         EcommerceApp.sharedPreferences.setBool("lang", true);
                       });
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => Conutry ()));
+                          context, MaterialPageRoute(builder: (_) => MyApp()));
                     },
                     child: Container(
                         alignment: Alignment.center,

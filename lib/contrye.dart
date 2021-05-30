@@ -4,10 +4,13 @@ import 'model/model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'lan/deldgt.dart';
 import 'tools/ecomm.dart';
+import 'package:cobonapp_flutter/splashNew/model_animt.dart';
+
 class Conutry extends StatefulWidget {
   @override
   _ConutryState createState() => _ConutryState();
 }
+
 class _ConutryState extends State<Conutry> {
   String dropdownValue = "SU";
   List<String> listco = [];
@@ -118,12 +121,14 @@ class _ConutryState extends State<Conutry> {
                 itemBuilder: (contextBuild, index) {
                   ItemModel model =
                       ItemModel.fromJson(snapshot.data.documents[index].data);
-                  print("sdsdddddddddddddssd ${model.nameCon}");
+                  print("sdsdddddddddddddssd ${model.nameConEn}");
                   return ListTile(
                     onTap: () {
                       setState(() {
-                        dropdownValue = "${model.nameCon}";
-                        listco.add(model.nameCon);
+                        dropdownValue =
+                            "${EcommerceApp.sharedPreferences.getBool("lang") ? model.nameConEn : model.nameCon}";
+                        listco.add(
+                            "${EcommerceApp.sharedPreferences.getBool("lang") ? model.nameConEn : model.nameCon}");
                       });
                       EcommerceApp.sharedPreferences
                           .setString("iamgeCo", model.scienceImage);
@@ -131,11 +136,12 @@ class _ConutryState extends State<Conutry> {
                           .setStringList("listco", listco);
                       print(EcommerceApp.sharedPreferences
                           .getStringList('listco'));
-                      Route route =
-                          MaterialPageRoute(builder: (context) => LangCode());
+                      Route route = MaterialPageRoute(
+                          builder: (context) => OnboardingExample());
                       Navigator.push(context, route);
                     },
-                    title: Text("${model.nameCon}"),
+                    title: Text(
+                        "${EcommerceApp.sharedPreferences.getBool("lang") ? model.nameConEn : model.nameCon}"),
                     leading: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(

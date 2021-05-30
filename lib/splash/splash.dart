@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cobonapp_flutter/home/homescreen.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 import 'package:flutter/material.dart';
-import 'package:cobonapp_flutter/contrye.dart';
+import 'package:cobonapp_flutter/lan/deldgt.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
         ? Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => HomeScreen()))
         : Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => Conutry()));
+            MaterialPageRoute(builder: (context) => LangCode()));
   }
 
   @override
