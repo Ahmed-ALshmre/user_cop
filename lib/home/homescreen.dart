@@ -50,6 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<QuerySnapshot> listQuery;
+  BuildContext dialogContext;
   int index = 0;
   int count = 50;
   bool ifFloat = false;
@@ -216,23 +218,102 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  List<String> catoAr = [];
+  List<String> catoEn = [];
+  Widget filter() {
+    return Container(
+      height: 40,
+      width: double.infinity,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('list').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Center(
+                child: CircularProgressIndicator(),
+              );
+            default:
+              return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (contextBuild, index) {
+                    print("naasmkasanlknsa$catoAr");
+                    // ignore: unrelated_type_equality_checks
+                    if (catoAr.every((element) =>
+                            element !=
+                            snapshot.data.documents[index]['artitle']) ||
+                        catoEn.every((element) =>
+                            element !=
+                            snapshot.data.documents[index]['entitle'])) {
+                      catoAr.add(snapshot.data.documents[index]['artitle']);
+                      catoEn.add(snapshot.data.documents[index]['entitle']);
+                      print("laist filter : $catoAr");
+                      Provider.of<AppData>(context, listen: false)
+                          .catog(catoEn, catoAr);
+                    }
+                    // Provider.of<AppData>(context,listen: false).catog(catoAr,catoEn);
+                    //  print("sdsdddddddddddddssd ");
+                    return Container(
+                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        onTap: () async {
+                          await FilterListDialog.display(context,
+                              allTextList: EcommerceApp.sharedPreferences
+                                      .getBool("lang")
+                                  ? Provider.of<AppData>(context, listen: false)
+                                      .arCato
+                                  : Provider.of<AppData>(context, listen: false)
+                                      .cato,
+                              height: 480,
+                              borderRadius: 20,
+                              headlineText:
+                                  EcommerceApp.sharedPreferences.getBool("lang")
+                                      ? "Filter"
+                                      : "فلتره",
+                              searchFieldHintText:
+                                  EcommerceApp.sharedPreferences.getBool("lang")
+                                      ? "Search"
+                                      : "البحث هنا",
+                              selectedTextList: selectedCountList,
+                              onApplyButtonClick: (list) {
+                            if (list != null) {
+                              setState(() {
+                                selectedCountList = List.from(list);
+                                Provider.of<AppData>(context, listen: false)
+                                    .ctogreList(selectedCountList);
+                                chackQuery(selectedCountList);
+                              });
+                              Navigator.of(context, rootNavigator: true).pop();
+                            } else {
+                              selectedCountList.clear();
+                              Navigator.of(context, rootNavigator: true).pop();
+                            }
+                          });
+                        },
+                        child: Icon(
+                          Icons.filter_alt_outlined,
+                          size: 35,
+                        ),
+                      ),
+                    );
+                  });
+          }
+        },
+      ),
+    );
+  }
+
+  String selectFilter;
   Widget flu() {
-    if (Provider.of<AppData>(context, listen: false).ctogre != null) {
-      print(
-          "mamsmasmacmac${Provider.of<AppData>(context, listen: false).ctogre.first}");
+    if (selectedCountList.length >= 1) {
+      print('122222222222222222222222');
       return Container(
         width: 400,
-        child: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance
-              .collection("items")
-              .where("listCatoEn",
-                  isEqualTo: EcommerceApp.sharedPreferences
-                      .getStringList("listco")
-                      .first)
-              .where("market",
-                  isEqualTo:
-                      Provider.of<AppData>(context, listen: false).ctogre.first)
-              .snapshots(),
+        child: FutureBuilder<QuerySnapshot>(
+          future: listQuery,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError)
@@ -251,6 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (contextBuild, index) {
                       ItemModel model = ItemModel.fromJson(
                           snapshot.data.documents[index].data);
+                   
                       return CopTime1(model: model);
                     });
             }
@@ -286,6 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (contextBuild, index) {
                       ItemModel model = ItemModel.fromJson(
                           snapshot.data.documents[index].data);
+                     
                       return CopTime1(model: model);
                     });
             }
@@ -295,90 +378,38 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-//fi
-// ignore: missing_return
-  List<String> catoAr = [];
-  List<String> catoEn = [];
-  Widget filter() {
-    return Container(
-      height: 40,
-      width: double.infinity,
-      child: StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('list').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Center(
-                child: CircularProgressIndicator(),
-              );
-            default:
-              return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (contextBuild, index) {
-                    print("naasmkasanlknsa$catoAr");
-                    // ignore: unrelated_type_equality_checks
-                    if (catoAr.every((element) =>
-                            element !=
-                            snapshot.data.documents[index]['artitle']) &&
-                        catoEn.every((element) =>
-                            element !=
-                            snapshot.data.documents[index]['entitle'])) {
-                      catoAr.add(snapshot.data.documents[index]['artitle']);
-                      catoEn.add(snapshot.data.documents[index]['entitle']);
-                      Provider.of<AppData>(context, listen: false)
-                          .catog(catoAr, catoEn);
-                      print("sdsdddddddddddddssd ");
-                    }
-                    // Provider.of<AppData>(context,listen: false).catog(catoAr,catoEn);
-                    //  print("sdsdddddddddddddssd ");
-                    return Container(
-                      padding: EdgeInsets.only(left: 10),
-                      alignment: Alignment.centerLeft,
-                      child: InkWell(
-                        onTap: () async {
-                          await FilterListDialog.display(context,
-                              allTextList: EcommerceApp.sharedPreferences
-                                      .getBool("lang")
-                                  ? Provider.of<AppData>(context, listen: false)
-                                      .arCato
-                                  : Provider.of<AppData>(context, listen: false)
-                                      .cato,
-                              height: 480,
-                              borderRadius: 20,
-                              headlineText:
-                                  EcommerceApp.sharedPreferences.getBool("lang")
-                                      ? "Filter"
-                                      : "فلتره",
-                              searchFieldHintText:
-                                  EcommerceApp.sharedPreferences.getBool("lang")
-                                      ? "Search"
-                                      : "البحث هنا",
-                              selectedTextList: selectedCountList,
-                              onApplyButtonClick: (list) {
-                            if (list != null) {
-                              setState(() {
-                                selectedCountList = List.from(list);
-                                Provider.of<AppData>(context, listen: false)
-                                    .ctogreList(selectedCountList);
-                              });
-                              Navigator.pop(context);
-                            }
-                          });
-                        },
-                        child: Icon(
-                          Icons.filter_alt_outlined,
-                          size: 35,
-                        ),
-                      ),
-                    );
-                  });
-          }
-        },
-      ),
-    );
+  Future chackQuery(List query) async {
+    if (query.length >= 1) {
+      startSearch(query);
+    } else {
+      startCatogry();
+    }
+  }
+
+  Future startSearch(List query) async {
+    print(query);
+    listQuery = Firestore.instance
+        .collection('items')
+        .where('listCatoAr', whereIn: query)
+        .where("listCatoEn",
+            isEqualTo:
+                EcommerceApp.sharedPreferences.getStringList("listco").first)
+        .getDocuments()
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future startCatogry() async {
+    listQuery = Firestore.instance
+        .collection('items')
+        .where("listCatoEn",
+            isEqualTo:
+                EcommerceApp.sharedPreferences.getStringList("listco").first)
+        .getDocuments()
+        .catchError((e) {
+      print(e.toString());
+    });
   }
 
   // ignore: missing_return

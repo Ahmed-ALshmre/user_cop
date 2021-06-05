@@ -6,8 +6,14 @@ import 'package:cobonapp_flutter/home/homescreen.dart';
 import 'package:cobonapp_flutter/tools/ecomm.dart';
 
 // ignore: missing_return
-Widget appBarHome(
-    {Widget getData,GlobalKey<ScaffoldState> keySca, BuildContext context, bool hf,}) {
+Widget appBarHome({
+  Widget getData,
+  String title,
+  String market,
+  GlobalKey<ScaffoldState> keySca,
+  BuildContext context,
+  bool hf,
+}) {
   return AppBar(
     backgroundColor: Colors.transparent,
     leading: InkWell(
@@ -20,7 +26,7 @@ Widget appBarHome(
       Padding(
         padding: EdgeInsets.only(left: 8.0, right: 8, top: 10, bottom: 10),
         child: InkWell(
-          onTap: (){
+          onTap: () {
             showModalBottomSheet(
                 context: context,
                 builder: (context) {
@@ -49,7 +55,9 @@ Widget appBarHome(
         ),
         onPressed: () {
           Route route =
-              MaterialPageRoute(builder: (context) => SearchProduct());
+              MaterialPageRoute(builder: (context) => SearchProduct(title: title, 
+              market: market,
+              ));
           Navigator.of(context).push(route);
         },
       ),
@@ -69,6 +77,7 @@ Widget appBarHome(
     ],
   );
 }
+
 Widget droer() {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 9),
@@ -95,6 +104,7 @@ Widget droer() {
     ),
   );
 }
+
 void feedBek(context) {
   showDialog(
       context: context,
@@ -119,7 +129,6 @@ void feedBek(context) {
           // optional
           onSubmitPressed: (int rating) {
             print("onSubmitPressed: rating = $rating");
-
           },
           onAlternativePressed: () {
             print("onAlternativePressed: do something");

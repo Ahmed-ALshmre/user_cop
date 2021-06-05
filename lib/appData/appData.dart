@@ -5,6 +5,7 @@ int c =0;
 List<dynamic>contrey;
 List<String>cato;
 List<String>arCato;
+String market;
 List<String>ctogre;
 List<dynamic>listImageTradMark = [];
 bool like =true;
@@ -16,6 +17,12 @@ bool like =true;
 catog(List cto ,arCto){
   cato = cto;
   arCato=arCto;
+  notifyListeners();
+}
+
+marketFut(String market){
+  
+  market = market;
   notifyListeners();
 }
   cooList(List coo){

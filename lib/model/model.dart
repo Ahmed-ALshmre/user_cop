@@ -1,6 +1,7 @@
 class ItemModel {
   String titleAr;
   String nameCon;
+  String market;
   String nameConEn;
   String url;
   String titleEn;
@@ -21,6 +22,7 @@ class ItemModel {
       {this.url, this.titleEn,this.nameCon,
         this.titleAr,this.conter,
         this.imageList,
+        this.market,
         this.dateTimeEnd,
         this.dateTime,
         this.nameConEn,
@@ -37,6 +39,7 @@ class ItemModel {
   ItemModel.fromJson(Map<String, dynamic> json) {
     titleEn = json['titleEn'];
     url = json['productUrl'];
+    market = json['market'];
      nameConEn = json['name_e'];
     scienceImage = json['image'];
     dateTime = json['startS'];
@@ -58,6 +61,7 @@ class ItemModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['titleEn'] = this.titleEn;
+    data['market'] = this.market;
     data['productUrl'] = this.url;
     data['name_e'] = this.nameConEn;
     data['startS'] = this.dateTime;

@@ -31,7 +31,7 @@ class _CopTime1State extends State<CopTime1> {
     SizeConfig().init(context);
     return bodyHome(context: context);
   }
-
+  
 // body home
   Widget bodyHome(
       {double size, sizeWid, sizePadding, sizeBox, BuildContext context}) {
